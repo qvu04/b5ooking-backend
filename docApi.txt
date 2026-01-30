@@ -1,0 +1,154 @@
+Api Auth xác thực login, register
+Register (Post) : http://localhost:7000/api/auth/register
+
+login (Post) : http://localhost:7000/api/auth/login
+
+Api riêng tư cho user
+Cập nhật hồ sơ người dùng (Patch): http://localhost:7000/api/user/update-profile
+
+Đặt phòng (Post) : http://localhost:7000/api/user/BookingRoom
+
+Thanh toán phòng đó : http://localhost:7000/api/user/ConfirmBooking/:id
+
+Hủy đặt phòng đó : http://localhost:7000/api/user/CancelBooking/:id
+
+Lấy trạng thái từng loại Booking (Pending, Confirm, Cancel) : http://localhost:7000/api/user/getBookingByStatus
+
+Lấy danh sách lịch sử đã phòng đã từng ở : http://localhost:7000/api/user/getFinishedBookings
+
+Thêm yêu thích của khách sạn đó (Post) :  http://localhost:7000/api/user/addFavoriteHotel/:hotelId
+
+Xóa yêu thích khách sạn đó (Delete) : http://localhost:7000/api/user/removeFavoriteHotel/:hotelId
+
+Lấy danh sách yêu thích khách sạn của người dùng (Get) : http://localhost:7000/api/user/getAllFavoriteHotel
+
+Thêm review người dùng hiện tại để đánh giá hotel (Post) : http://localhost:7000/api/user/addReview/:hotelId
+
+Sửa review người dùng hiện tại đánh giá hotel (Put):  http://localhost:7000/api/user/updateReview/:id
+
+Xóa review người dùng hiện tại đánh giá hotel (Delete) :  http://localhost:7000/api/user/deleteReview/:id
+
+Lấy danh sách đánh giá của các khách sạn của ng dùng đã đánh giá (Get) : http://localhost:7000/api/user/getAllReviewByUser
+
+Api riêng tư cho admin
+
+Tạo vị trí (Post) : http://localhost:7000/api/admin/createLocation truyền city truyền ảnh key là imageFile
+
+Sửa vị trí (Put) : http://localhost:7000/api/admin/updateLocation/:id
+
+Xóa vị trí nhưng sẽ không xóa được nếu như còn khách sạn đó (Delete) : http://localhost:7000/api/admin/deleteLocation/:id
+
+Lấy danh sách vị trí có phân trang (Get) : http://localhost:7000/api/admin/getAllLocaltionsForAdmin
+
+Lấy danh sách tên khu vực (Get) : http://localhost:7000/api/admin/getAllLocaltionNames
+
+Tạo tiện nghi (Post) : http://localhost:7000/api/admin/createAmenity truyền name
+
+Sửa tiện nghi (Put) : http://localhost:7000/api/admin/updateAmenity/:id
+
+Xóa tiện nghi (Delete) : http://localhost:7000/api/admin/deleteAmenity/:id
+
+Lấy danh sách tiện nghi (Get) : http://localhost:7000/api/admin/getAllAmenities
+
+Tạo khách sạn (Post) : http://localhost:7000/api/admin/createHotel truyền name, address, description, locationId, defaultRating, amenities truyền ảnh thì key imageFile thêm tối đa 30 ảnh
+
+Sửa khách sạn (Put) : http://localhost:7000/api/admin/updateHotel/:id
+
+Xóa khách sạn (Delete) : http://localhost:7000/api/admin/deleteHotel/:id
+
+Lấy danh sách khách sạn (Get) : http://localhost:7000/api/admin/getAllHotels có thanh select khi hk chọn thì gọi http://localhost:7000/api/admin/getAllHotels còn khi bấm vô khu vực bất kì http://localhost:7000/api/admin/getAllHotels?locationId=3&page=1 có phân trang có thể tìm kiếm theo tên key là hotelName
+
+Lấy danh sách tên khách sạn (Get) : http://localhost:7000/api/admin/getAllHotelNames
+
+Lấy tất cả các blog (Get) : http://localhost:7000/api/admin/getAllBlogs còn khi bấm vô khu vực bất kì http://localhost:7000/api/admin/getAllBlogs?locationId=3&page=1 có phân trang và có tìm kiếm theo tên bài blog theo title key là blogTitle
+
+Tạo phòng (Post) : http://localhost:7000/api/admin/createRoom  truyền hotelId, name, type, description, price, discount, maxGuests, amenities truyền ảnh thì key là imageFile thêm tối đa 5 ảnh
+
+Sửa phòng (Put) : http://localhost:7000/api/admin/updateRoom/:id
+
+Xóa phòng (Delete) : http://localhost:7000/api/admin/deleteRoom/:id
+
+Lấy tất cả các phòng (Get) : http://localhost:7000/api/admin/getAllRooms tương tự như cái hotel thay cái locationId thành hotelId có tìm kiếm tên phòng key là roomName
+
+Lấy tất cả các phòng (Get) : http://localhost:7000/api/admin/getAllRooms tương tự như cái hotel thay cái locationId thành hotelId
+
+
+Tạo blog (Post) : http://localhost:7000/api/admin/createBlog truyền title, content, author, locationId, summary truyền ảnh thì key imageFile
+
+Sửa blog theo id (Put) :  http://localhost:7000/api/admin/updateBlog/:id
+
+Xóa blog theo id (Delete) : http://localhost:7000/api/admin/deleteBlog/:id
+
+Tạo người dùng mới chỉ có admin tạo (Post) : http://localhost:7000/api/admin/createUser truyền firstName, lastName, email, password, role, gender
+
+Sửa người dùng mới chỉ có admin sửa (Put) : http://localhost:7000/api/admin/updateUser/:id
+
+Xóa người dùng mới chỉ có admin xóa (Delete) : http://localhost:7000/api/admin/deleteUser/:id
+
+Lấy danh sách người dùng (Get) : http://localhost:7000/api/admin/getAllUsers có thanh tìm kiếm bằng fullName khi có gì trong thanh tìm kiếm gọi http://localhost:7000/api/admin/getAllUsers còn khi ghi tên thì http://localhost:7000/api/admin/getAllUsers?fullName=fef
+
+Lấy tổng doanh thu , khách sạn , người dùng (ROle :User), phòng (Get) : http://localhost:7000/api/dashBoard/getTotal
+
+Lấy doanh thu theo ngày hoặc tháng hoặc năm dùng cho biểu cột hoặc đường (Get): http://localhost:7000/api/dashBoard/getGroupedRevenue
+
+
+Lấy doanh thu theo ngày hoặc tháng hoặc năm dùng cho biểu cột hoặc đường (Get): http://localhost:7000/api/dashboard/getGroupedRevenue
+
+Lấy phần trăm doanh thu của các khách sạn dùng cho biểu đồ tròn (Get) : http://localhost:7000/api/admin/getHotelRevenuePercentage
+
+Lấy phần trăm doanh thu của các khách sạn dùng cho biểu đồ tròn (Get) : http://localhost:7000/api/dashBoard/getHotelRevenuePercentage
+
+
+Lấy danh sách booking các trạng thái confirm và finish (Get) : http://localhost:7000/api/admin/getAllBooking này là lấy tất cả 2 trạng thái còn muốn lấy 1 trong 2 trạng thái thì http://localhost:7000/api/admin/getAllBooking?status=CONFIRMED 
+
+Phần ảnh phụ của hotel và room:
+Lấy tất cả các ảnh phụ của tất cả khách sạn (Get) : http://localhost:7000/api/admin/getHotelImages còn muốn lọc ra ảnh phụ của khách sạn cụ thể http://localhost:7000/api/admin/getHotelImages?hotelId
+
+Lấy danh sách tên khách sạn (Get) : http://localhost:7000/api/admin/getAllHotelNames
+
+Tạo ảnh phụ của khách sạn theo id khách sạn đó (Get) : http://localhost:7000/api/admin/addHotelImage/:hotelId truyền ảnh thì key imageFile thêm đc tối đa 30 ảnh
+
+Sửa ảnh phụ của khách sạn theo id ảnh phụ muốn sửa đó (Post) : http://localhost:7000/api/admin/updateHotelImage/:id
+
+Xóa ảnh phụ của khách sạn theo id ảnh phụ muốn sửa đó (Delete) : http://localhost:7000/api/admin/deleteHotelImage/:id
+
+Lấy danh sách tên phòng có trả về tên khách sạn của những phòng đó (Get) : http://localhost:7000/api/admin/getAllRoomName
+
+Lấy tất cả các ảnh phụ của tất cả phòng : http://localhost:7000/api/admin/getRoomImages còn muốn lọc phòng cụ thể thì http://localhost:7000/api/admin/getRoomImages?roomId
+
+Tạo ảnh phụ của phòng theo id phòng đó (Post) : http://localhost:7000/api/admin/addRoomImage/:roomId truyền ảnh thì key imageFile thêm đc tối đa 5 ảnh
+
+Sửa ảnh phụ của phòng theo id phòng đó (Put) : http://localhost:7000/api/admin/updateRoomImage/:id
+
+Xóa ảnh phụ của phòng theo id phòng đó (Delete) : http://localhost:7000/api/admin/deleteRoomImage/:id
+
+
+Api công khai
+http://localhost:7000/api/blog/
+
+Lấy danh sách vị trí (Get) : http://localhost:7000/api/hotel/getAllLocations
+
+Lấy danh sách 1 vài vị trí (Get) : http://localhost:7000/api/hotel/getSomeLocaltions
+
+Lấy danh sách khách sạn (Get) : http://localhost:7000/api/hotel/getAllHotels
+
+Lấy thông tin khách sạn theo khách sạn id (Get) : http://localhost:7000/api/hotel/getHotelById/:id
+
+Lấy khách sạn theo khu vực (Get) : http://localhost:7000/api/hotel/getHotelsByLocation/:locationId
+    
+Lấy những khách sạn liên quan tới địa điểm và nhận phòng trả phòng và số người (Get) : http://localhost:7000/api/hotel/getSearchAvailableHotels
+
+Lấy tất cả đánh giá của id khách sạn (Get) : http://localhost:7000/api/hotel/getAllReviewByHotelId/:id
+
+Lấy danh sách phòng của khách sạn (Get) : http://localhost:7000/api/room/getRoomsByHotel/:hotelId
+
+Lấy thông tin phòng theo id phòng (Get) : http://localhost:7000/api/room/getRoomById/:roomId
+
+Lấy tất cả bài blog có phân trang (Get) : http://localhost:7000/api/blog/getAllBlogs ví dụ  http://localhost:7000/api/blog/getAllBlogs?page=1 hoặc hk cần để ?page=1 cũng ra trang 1
+
+Lấy thông tin bài viết đó theo slug (Get) :  http://localhost:7000/api/blog/getBlogBySlug/:slug
+
+Lấy các bài viết theo khu vực có phân trang (Get) : http://localhost:7000/api/blog/getAllBlogsByLocationId/:locationId ví dụ http://localhost:7000/api/blog/getAllBlogsByLocationId/:locationId?page=1 hoặc hk cần để ?page=1 cũng ra trang 1
+
+Lấy danh sách phòng phù hợp với checkin checkout guests để lọc phòng (Get) : http://localhost:7000/api/room/getSearchAvailableHotels
+

@@ -1,0 +1,255 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  USER
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELED
+  FINISHED
+}
+
+enum Provider {
+  local
+  google
+}
+
+enum PaymentStatus {
+  UNPAID
+  PAID
+  FAILED
+}
+model User {
+  id          Int     @id @default(autoincrement())
+  firstName   String
+  lastName    String
+  fullName    String
+  avatar      String?
+  email       String  @unique
+  dateOfBirth String?
+  gender      String?
+  phone       String?
+  address     String?
+  role        Role    @default(USER)
+  credentials Credential[] 
+  bookings Booking[]
+  reviews  Review[]
+
+  favorites FavoriteHotel[]
+
+  create_At DateTime @default(now())
+  update_At DateTime @updatedAt
+}
+
+model Credential {
+  id Int @id @default(autoincrement())
+  provider Provider
+  password String?
+  providerId String?
+
+  userId Int 
+  user User @relation(fields : [userId], references : [id])
+}
+
+model Location {
+  id Int @id @default(autoincrement())
+
+  imageLocation String?
+  city          String
+  distric       String?
+  ward          String?
+  latitude      Float?
+  longitude     Float?
+
+  blogPosts BlogPost[]
+  hotel     Hotel[]
+}
+
+model Hotel {
+  id            Int            @id @default(autoincrement())
+  name          String
+  address       String
+  description   String      @db.LongText
+  image         String
+  averageRating Float?
+  defaultRating Float?
+  amenities     HotelAmenity[]
+  locationId    Int
+  location      Location       @relation(fields: [locationId], references: [id])
+
+  rooms       Room[]
+  reviews     Review[]
+  favoritedBy FavoriteHotel[]
+
+  images HotelImage[]
+
+
+  create_At DateTime @default(now())
+  update_At DateTime @updatedAt
+}
+
+
+model HotelImage {
+  id        Int      @id @default(autoincrement())
+  imageUrl  String
+  hotelId   Int
+  hotel     Hotel    @relation(fields: [hotelId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+model Room {
+  id Int @id @default(autoincrement())
+  name String
+  type String
+  price Int
+  discount Int?
+  description String?   @db.LongText
+  amenities RoomAmenity[]
+
+  maxGuests Int     @default(2)
+  image     String?
+
+  hotelId   Int
+  hotel     Hotel       @relation(fields: [hotelId], references: [id])
+  bookings  Booking[]
+  images    RoomImage[]
+  create_At DateTime    @default(now())
+  update_At DateTime    @updatedAt
+}
+
+model RoomImage {
+  id        Int      @id @default(autoincrement())
+  imageUrl  String
+  RoomId    Int
+  room      Room     @relation(fields: [RoomId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+model Amenity {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+
+  hotels    HotelAmenity[]
+  rooms     RoomAmenity[]
+  create_At DateTime       @default(now())
+}
+
+model HotelAmenity {
+  id        Int @id @default(autoincrement())
+  hotelId   Int
+  amenityId Int
+
+  hotel   Hotel   @relation(fields: [hotelId], references: [id])
+  amenity Amenity @relation(fields: [amenityId], references: [id])
+
+  @@unique([hotelId, amenityId])
+}
+
+model RoomAmenity {
+  id Int @id @default(autoincrement())
+
+  roomId    Int
+  amenityId Int
+
+  room    Room    @relation(fields: [roomId], references: [id])
+  amenity Amenity @relation(fields: [amenityId], references: [id])
+
+  @@unique([roomId, amenityId])
+}
+
+model Booking {
+  id         Int           @id @default(autoincrement())
+  userId     Int
+  roomId     Int
+  checkIn    DateTime
+  checkOut   DateTime
+  status     BookingStatus @default(PENDING)
+  guests     Int
+  totalPrice Int
+  paymentStatus PaymentStatus @default(UNPAID) 
+  stripeSessionId String?
+  currency        String?
+  paidAmount   Int?    
+  paidCurrency String? 
+
+  user User @relation(fields: [userId], references: [id])
+  room Room @relation(fields: [roomId], references: [id])
+
+  voucherId Int?
+  Voucher Voucher? @relation(fields: [voucherId], references: [id])
+
+  create_At DateTime @default(now())
+  update_At DateTime @updatedAt
+}
+
+model Voucher {
+  id Int @id @default(autoincrement())
+  code String @unique
+  discount Int
+  expiresAt DateTime
+  isActive Boolean @default(true)
+  create_At DateTime @default(now())
+
+  usageLimit    Int? 
+  usedCount Int @default(0)
+  perUserLimit Int? 
+  bookings Booking[]
+}
+
+model Review {
+  id      Int     @id @default(autoincrement())
+  userId  Int
+  hotelId Int
+  rating  Int
+  comment String?
+
+  user      User     @relation(fields: [userId], references: [id])
+  hotel     Hotel    @relation(fields: [hotelId], references: [id])
+  create_At DateTime @default(now())
+  update_At DateTime @updatedAt
+}
+
+model BlogPost {
+  id         Int     @id @default(autoincrement())
+  title      String
+  slug       String  @unique
+  content    String  @db.LongText
+  image      String
+  author     String?
+  locationId Int
+  summary    String
+
+  location Location? @relation(fields: [locationId], references: [id])
+
+  create_At DateTime @default(now())
+  update_At DateTime @updatedAt
+}
+
+model FavoriteHotel {
+  id      Int @id @default(autoincrement())
+  userId  Int
+  hotelId Int
+
+  user  User  @relation(fields: [userId], references: [id])
+  hotel Hotel @relation(fields: [hotelId], references: [id])
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, hotelId])
+}

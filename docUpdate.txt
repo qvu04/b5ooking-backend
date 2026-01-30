@@ -1,0 +1,31 @@
+Update thêm chức năng 
+
+Tạo voucher: Post
+http://localhost:7000/api/admin/createVoucher truyền code, discount, expiresAt, usageLimit, perUserLimit
+    code : mã voucher
+    discount : ví dụ 10 tương đương 10%
+    expiresAt : hạn bao nhiêu (2025-10-06)
+    usageLimit : sử dụng bao nhiêu lần trong toàn hệ thống
+    perUserLimit : người dùng sử dụng đc mấy lần
+
+Cập nhật voucher : Path
+http://localhost:7000/api/admin/updateVoucher/:id truyền expiresAt, isActive, usageLimit, perUserLimit
+
+Lấy thông tin voucher theo id : Get
+http://localhost:7000/api/admin/getVoucherById/:id
+
+Lấy tất cả voucher phân trang kèm theo lọc theo mã voucher : Get
+http://localhost:7000/api/admin/getAllVouchers
+muốn phân trang kèm theo lọc mã
+http://localhost:7000/api/admin/getAllVouchers?codeName=SALE60&page=1
+
+Lấy tất cả ảnh khách sạn có phân trang : Get
+http://localhost:7000/api/hotel/getAllImageHotels
+
+Danh sách người dùng và mã giảm giá: Get
+http://localhost:7000/api/admin/getAllUserUseVoucher có lọc theo tên mã giảm giá phân trang ?codeName=SALE10
+
+
+
+
+

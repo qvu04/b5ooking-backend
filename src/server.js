@@ -10,23 +10,34 @@ import { startStatusBooking } from "./cron/statusBooking.js";
 dotenv.config();
 
 const app = express();
-app.use(express.json());
-const PORT = process.env.PORT || 8080
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
-if (process.env.NODE_ENV === "production") {
-    startBookingStatusCron();
-    startActiveVoucherCron();
-    startStatusBooking();
+app.get("/", (req, res) => {
+    res.send("hello");
+});
+
+app.use(router);
+app.use(errorHandler);
+
+const PORT = process.env.PORT;
+if (!PORT) {
+    throw new Error("PORT is not defined");
 }
 
-app.get("/", (req, res) => {
-    res.send("hello")
-})
-app.use(router)
-app.use(errorHandler)
 app.listen(PORT, () => {
-    console.log(`Máy chủ được chạy ở http://localhost:${PORT}`)
-})
+    console.log(`Server running on port ${PORT}`);
+
+    if (process.env.NODE_ENV === "production") {
+        try {
+            startBookingStatusCron();
+            startActiveVoucherCron();
+            startStatusBooking();
+            console.log("Cron jobs started");
+        } catch (err) {
+            console.error("Cron init error:", err.message);
+        }
+    }
+});
